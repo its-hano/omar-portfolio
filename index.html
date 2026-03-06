@@ -1,0 +1,1247 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omar Alamin | Digital Marketing Specialist</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --secondary: #7b2cbf;
+            --accent: #ff6b6b;
+            --dark: #0a0a0f;
+            --dark2: #12121a;
+            --dark3: #1a1a25;
+            --text: #ffffff;
+            --text2: #a0a0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text2);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            max-width: 1100px;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1,
+        .hero-text p {
+            text-align: left;
+        }
+
+        .hero-text p {
+            margin-left: 0;
+        }
+
+        .hero-buttons {
+            justify-content: flex-start;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text2);
+            max-width: 600px;
+            margin: 0 auto 35px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        /* Profile Image */
+        .profile-container {
+            margin-top: 30px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-img {
+            width: 320px;
+            height: 400px;
+            border-radius: 20px;
+            object-fit: cover;
+            object-position: center top;
+            border: 5px solid var(--primary);
+            box-shadow: 
+                0 0 0 3px var(--dark),
+                0 0 0 6px var(--primary),
+                0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.02);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 3px var(--dark), 0 0 0 6px var(--primary), 0 20px 60px rgba(0, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 0 3px var(--dark), 0 0 0 8px var(--primary), 0 20px 80px rgba(0, 212, 255, 0.4); }
+        }
+
+        /* About Section */
+        .about {
+            padding: 120px 50px;
+            background: var(--dark2);
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title span {
+            color: var(--primary);
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .section-title h2 {
+            font-size: 3rem;
+            margin-top: 15px;
+            background: linear-gradient(135deg, var(--text), var(--text2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            color: var(--text2);
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: var(--dark3);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+
+        .skill-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .skill-item i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--dark3);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text2);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 120px 50px;
+            background: var(--dark);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            background: var(--dark2);
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-icon {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, var(--dark3), var(--dark2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .project-icon i {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .project-content {
+            padding: 30px;
+        }
+
+        .project-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .project-content p {
+            color: var(--text2);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            padding: 6px 14px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .project-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .project-btn:hover {
+            color: var(--primary);
+            gap: 15px;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 120px 50px;
+            background: var(--dark2);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: var(--dark3);
+            padding: 40px 30px;
+            border-radius: 25px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(123, 44, 191, 0.2));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+
+        .service-icon i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: var(--text2);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 120px 50px;
+            background: var(--dark);
+        }
+
+        .contact-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-info > p {
+            color: var(--text2);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-item i {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .contact-item span {
+            color: var(--text2);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: var(--dark3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .contact-form {
+            background: var(--dark2);
+            padding: 40px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 18px 20px;
+            background: var(--dark3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 50px;
+            background: var(--dark2);
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        footer p {
+            color: var(--text2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .profile-img {
+                width: 250px;
+                height: 320px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .about-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid,
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Omar.</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div id="canvas-container"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <i class="fas fa-circle" style="font-size: 8px; margin-right: 8px;"></i>
+                    Available for Work
+                </div>
+                <h1>Hi, I'm <span>Omar Mohammed<br>Elamin Kamal</span></h1>
+                <p>Digital Marketing Specialist with expertise in Google Ads, analytics, e-commerce management social media strategy , and data-driven campaign optimization.Digital Marketing & E-commerce Professional Certificate</p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">
+                        <i class="fas fa-briefcase"></i> View Projects
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">
+                        <i class="fas fa-paper-plane"></i> Contact Me
+                    </a>
+                </div>
+            </div>
+            <div class="profile-container">
+                <img src="IMG_6122.JPG" alt="Omar Alamin" class="profile-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="section-title reveal">
+            <span>About Me</span>
+            <h2>Digital Marketing Expert</h2>
+        </div>
+        <div class="about-content">
+            <div class="about-text reveal">
+                <h3>Driving Growth Through Data-Driven Marketing</h3>
+                <p>I'm a Digital Marketing Specialist with practical experience in Google Ads, analytics, e-commerce store management, and performance optimization. I specialize in creating targeted campaigns that deliver measurable results.</p>
+                <p>My approach combines creative strategy with analytical thinking to maximize ROI and build lasting customer relationships.</p>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fab fa-google"></i>
+                        <span>Google Ads</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>E-commerce</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email Marketing</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-hashtag"></i>
+                        <span>Social Media</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-search"></i>
+                        <span>SEO</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-stats reveal">
+                <div class="stat-card">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Projects Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">30+</div>
+                    <div class="stat-label">Happy Clients</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="section-title reveal">
+            <span>My Work</span>
+            <h2>Featured Projects</h2>
+        </div>
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Email Marketing Presentation</h3>
+                    <p>Comprehensive email marketing presentation with strategies, automation workflows, and performance metrics.</p>
+                    <div class="project-tags">
+                        <span class="tag">Email Marketing</span>
+                        <span class="tag">Presentation</span>
+                    </div>
+                    <a href="_Activity-Exemplar_-Email-marketing-presentation.pptx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Brand Values Worksheet</h3>
+                    <p>Defined brand values and identity framework to establish strong market positioning.</p>
+                    <div class="project-tags">
+                        <span class="tag">Branding</span>
+                        <span class="tag">Strategy</span>
+                    </div>
+                    <a href="Activity-Exemplar_-Brand-values-worksheet.docx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-chess"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Competitive Analysis</h3>
+                    <p>In-depth competitive analysis to identify market opportunities and strategic advantages.</p>
+                    <div class="project-tags">
+                        <span class="tag">Analysis</span>
+                        <span class="tag">Research</span>
+                    </div>
+                    <a href="Activity-Exemplar_-Competitive-analysis.xlsx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-file-chart-pie"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Marketing Report</h3>
+                    <p>Detailed marketing performance report with insights and recommendations for growth.</p>
+                    <div class="project-tags">
+                        <span class="tag">Reporting</span>
+                        <span class="tag">Analytics</span>
+                    </div>
+                    <a href="Activity-exemplar_-Marketing-report-presentation.pptx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <div class="project-content">
+                    <h3>SMART Goals</h3>
+                    <p>Strategic SMART goals framework for measurable marketing objectives and outcomes.</p>
+                    <div class="project-tags">
+                        <span class="tag">Planning</span>
+                        <span class="tag">Goals</span>
+                    </div>
+                    <a href="Activity-Exemplar_-SMART-goals.docx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 6 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Social Media Report</h3>
+                    <p>Comprehensive social media performance report with engagement metrics and insights.</p>
+                    <div class="project-tags">
+                        <span class="tag">Social Media</span>
+                        <span class="tag">Reporting</span>
+                    </div>
+                    <a href="Activity-Exemplar_-Social-media-report-email (Solution) .docx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 7 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Stakeholder Communication Plan</h3>
+                    <p>Strategic communication plan for effective stakeholder engagement and management.</p>
+                    <div class="project-tags">
+                        <span class="tag">Communication</span>
+                        <span class="tag">Planning</span>
+                    </div>
+                    <a href="Activity-Exemplar_-Stakeholder-communication-plan.pptx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 8 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Social Media Calendar</h3>
+                    <p>Organized content calendar for consistent social media posting and campaign planning.</p>
+                    <div class="project-tags">
+                        <span class="tag">Content</span>
+                        <span class="tag">Planning</span>
+                    </div>
+                    <a href="Create a social media calendar (So;ution) .xlsx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 9 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-ad"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Display Ads Optimization</h3>
+                    <p>Optimized responsive display ads for maximum reach and conversion performance.</p>
+                    <div class="project-tags">
+                        <span class="tag">Display Ads</span>
+                        <span class="tag">Optimization</span>
+                    </div>
+                    <a href="Optimize responsive display ads (solution) .xlsx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 10 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="project-content">
+                    <h3>Ad Campaign Planner</h3>
+                    <p>Strategic ad campaign planner with budget allocation and targeting strategies.</p>
+                    <div class="project-tags">
+                        <span class="tag">PPC</span>
+                        <span class="tag">Campaign</span>
+                    </div>
+                    <a href="Social-media-ad-campaign-planner(solution) .xlsx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 11 -->
+            <div class="project-card reveal">
+                <div class="project-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="project-content">
+                    <h3>SEO - Meta Descriptions</h3>
+                    <p>Optimized webpage titles and meta descriptions for improved search engine visibility.</p>
+                    <div class="project-tags">
+                        <span class="tag">SEO</span>
+                        <span class="tag">Content</span>
+                    </div>
+                    <a href="Webpage title and meta description  .docx" class="project-btn" target="_blank">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-title reveal">
+            <span>Services</span>
+            <h2>What I Offer</h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <i class="fab fa-google-ad"></i>
+                </div>
+                <h3>Google Ads</h3>
+                <p>Strategic PPC campaigns optimized for maximum ROI with continuous monitoring and optimization.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Email Marketing</h3>
+                <p>Engaging email campaigns with automation sequences, A/B testing, and detailed performance analytics.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <i class="fas fa-share-nodes"></i>
+                </div>
+                <h3>Social Media</h3>
+                <p>Complete social media strategy covering content creation, scheduling, engagement, and growth.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <i class="fas fa-magnifying-glass-chart"></i>
+                </div>
+                <h3>Analytics</h3>
+                <p>Deep data analysis with custom dashboards to track KPIs and drive informed marketing decisions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="section-title reveal">
+            <span>Contact</span>
+            <h2>Get In Touch</h2>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info reveal">
+                <h3>Let's Work Together</h3>
+                <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>im2rley@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+966578361456</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-location-dot"></i>
+                    <span>Sudan, Khartoum</span>
+                </div>
+                <div class="social-links">
+                    <a href="https://linkedin.com/in/omar-mohammed-755342375" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://wa.me/966578361456" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/966578361456" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://wa.me/966578361456" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="contact-form reveal">
+                <form>
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Your Message" required></textarea>
+                    </div>
+                    <a href="https://wa.me/966578361456?text=Hello%20Omar,%20I%20found%20your%20portfolio%20and%20would%20like%20to%20connect." class="btn btn-primary" style="width: 100%; text-align: center;">
+                        <i class="fab fa-whatsapp"></i> Send Message on WhatsApp
+                    </a>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Omar Alamin. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+
+        // Three.js 3D Background
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        // Create particles
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 15;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.02,
+            color: 0x00d4ff,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // Create floating shapes
+        const shapes = [];
+        const geometryTypes = [
+            new THREE.TorusGeometry(0.5, 0.2, 16, 100),
+            new THREE.IcosahedronGeometry(0.5, 0),
+            new THREE.OctahedronGeometry(0.5, 0),
+            new THREE.TetrahedronGeometry(0.5, 0)
+        ];
+
+        const colors = [0x00d4ff, 0x7b2cbf, 0xff6b6b];
+
+        for (let i = 0; i < 15; i++) {
+            const geom = geometryTypes[Math.floor(Math.random() * geometryTypes.length)];
+            const mat = new THREE.MeshBasicMaterial({
+                color: colors[Math.floor(Math.random() * colors.length)],
+                wireframe: true,
+                transparent: true,
+                opacity: 0.3
+            });
+            const mesh = new THREE.Mesh(geom, mat);
+            mesh.position.x = (Math.random() - 0.5) * 10;
+            mesh.position.y = (Math.random() - 0.5) * 10;
+            mesh.position.z = (Math.random() - 0.5) * 5;
+            mesh.rotation.x = Math.random() * Math.PI;
+            mesh.rotation.y = Math.random() * Math.PI;
+            shapes.push(mesh);
+            scene.add(mesh);
+        }
+
+        camera.position.z = 5;
+
+        // Mouse interaction
+        let mouseX = 0;
+        let mouseY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = event.clientX / window.innerWidth - 0.5;
+            mouseY = event.clientY / window.innerHeight - 0.5;
+        });
+
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            particlesMesh.rotation.y += 0.0005;
+            particlesMesh.rotation.x += 0.0002;
+
+            shapes.forEach((shape, index) => {
+                shape.rotation.x += 0.005;
+                shape.rotation.y += 0.005;
+                shape.position.y += Math.sin(Date.now() * 0.001 + index) * 0.002;
+            });
+
+            camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 2 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Reveal animations
+        document.querySelectorAll('.reveal').forEach((element) => {
+            gsap.to(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out'
+            });
+        });
+
+        // Hero animations
+        gsap.from('.hero-content > *', {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            stagger: 0.2,
+            ease: 'power3.out'
+        });
+    </script>
+</body>
+</html>
